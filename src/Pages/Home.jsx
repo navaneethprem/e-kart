@@ -1,16 +1,20 @@
 import React from 'react'
 import { Button, Card, Col, Row } from 'react-bootstrap'
 import useFetch from "../Hooks/useFetch"
+import { addToWishlist } from '../redux/slices/wishlistSlices'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../redux/slices/cartSlices'
 
 function Home() {
   const data = useFetch("https://dummyjson.com/products")
   // console.log(data);
+  const dispatch = useDispatch()
   return (
     <Row className='ms-5' style={{ marginTop: "100px" }}>
       {
         data?.length>0?data?.map((product,index)=>(
         <Col key={index} className='mb-5' sm={12} md={6} lg={4} xl={3}>
-      <Card className='shadow rounded' style={{ width: '18rem', height:'29rem' }}>
+      <Card className='shadow rounded' style={{ width: '18rem', height:'27rem' }}>
       <Card.Img height={'200px'} variant="top" src={product?.thumbnail} />
       <Card.Body>
         <Card.Title>{product?.title}</Card.Title>
@@ -19,10 +23,10 @@ function Home() {
           <h5>${product?.price}</h5>
        </Card.Text>
         <div className='d-flex justify-content-between'>
-          <Button className="btn btn-light" >
+          <Button onClick={()=>dispatch(addToWishlist(product))} className="btn btn-light" >
             <i className='fa-solid fa-heart text-danger'></i>
           </Button>
-          <Button className="btn btn-light" >
+          <Button onClick={()=>dispatch(addToCart(product))} className="btn btn-light" >
             <i className='fa-solid fa-cart-plus text-success'></i>
           </Button>
   
